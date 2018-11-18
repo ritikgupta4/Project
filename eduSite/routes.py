@@ -7,9 +7,9 @@ from eduSite import app, db   #the app instance of class Flask is created in __i
 
 from eduSite.forms import loginForm, signupForm
 from eduSite.models import User, Post 
-#from flask_login import login_user, current_user, logout_user, login_required       #https://flask-login.readthedocs.io/en/latest/
+      
+from flask_login import login_user, current_user, logout_user, login_required      #https://flask-login.readthedocs.io/en/latest/
 
-from flask_login import login_user
 
 
 @app.route('/')                      #route() decorator to bind a function to a URL   #http://flask.pocoo.org/docs/1.0/api/#flask.Flask.route
@@ -17,6 +17,7 @@ from flask_login import login_user
 def home():
     return render_template('home.html')
 
+@app.route('/activity')
 def activity():
     return render_template('activity.html')
 
@@ -25,20 +26,25 @@ def activity():
 
 @app.route('/login', methods=['GET', 'POST']) #GET: Sends data in unencrypted form to the server.      POST:send HTML form data to server
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = loginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        password = User.query.filter_by(password=firm.password.data).first()
+        password = User.query.filter_by(password=form.password.data).first()
         if user and password:
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('activity'))
+            return redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+            flash('Login Unsuccessful. Please check username and password')
 
     return render_template('login.html', form=form)
+
 db.create_all()
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = signupForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, password=form.password.data)
@@ -55,3 +61,7 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+@app.route('/account')
+@login_required   #???
+def account():
+    return render_template('account.html')

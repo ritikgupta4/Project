@@ -7,6 +7,6 @@ app.config['SECRET_KEY'] = '00e6a25084c0fd1c76362b6a516bbc28'    #https://docs.p
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
-
+login_manager.login_view = 'login'
 
 from eduSite import routes
