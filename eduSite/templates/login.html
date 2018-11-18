@@ -1,0 +1,29 @@
+<html>
+<head>
+  <title>Login Page</title>
+</head>
+<body>
+  <div>
+    <form action="" method="post">
+      <fieldset>
+        <legend>Login</legend>
+        {{ form.csrf_token }}
+
+        <div>
+          {{ form.email.label }}<br>
+          {{ form.email }}<br>
+        </div>
+        <div>
+          {{ form.password.label }}<br>
+          {{ form.password }}
+        </div>
+        <div>
+          {{ form.remember }}
+          {{ form.remember.label }}<br>
+        </div>
+      </fieldset>
+      {{ form.submit }}<br>
+    </form>
+  </div>
+</body>
+</html>
