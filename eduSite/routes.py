@@ -9,7 +9,7 @@ from eduSite.forms import loginForm, signupForm
 from eduSite.models import User, Post 
 #from flask_login import login_user, current_user, logout_user, login_required       #https://flask-login.readthedocs.io/en/latest/
 
-
+from flask_login import login_user
 
 
 @app.route('/')                      #route() decorator to bind a function to a URL   #http://flask.pocoo.org/docs/1.0/api/#flask.Flask.route
@@ -27,12 +27,13 @@ def activity():
 def login():
     form = loginForm()
     if form.validate_on_submit():
-        if form.email.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
+        user = User.query.filter_by(email=form.email.data).first()
+        password = User.query.filter_by(password=firm.password.data).first()
+        if user and password:
+            login_user(user, remember=form.remember.data)
+            return redirect(url_for('activity'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
-
 
     return render_template('login.html', form=form)
 db.create_all()
