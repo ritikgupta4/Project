@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, RadioField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError 
-from eduSite.models import User 
+from eduSite.models import User, Post 
 
 class signupForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
@@ -28,7 +29,11 @@ class loginForm(FlaskForm):
     remember = BooleanField('Keep me logged in')
     submit = SubmitField('Login')
 
-class postForm(FlaskForm):
+class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content',validators=[DataRequired()])
+    submit = SubmitField('Post')
+
+class CommentForm(FlaskForm):
+    content = StringField('Comment', validators=[DataRequired()])
     submit = SubmitField('Post')

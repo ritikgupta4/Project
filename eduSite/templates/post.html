@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<h1> {{	post.title }} </h1>
+	<title>{{ post.title }}</title>
+</head>
+<body>
+	<div>
+        <a>{{ post.author.username }}</a>
+        <small>{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+     </div>
+            <p>{{ post.content }}</p>
+            {% if post.comments %}
+                    <p>
+                    {% for comment in post.comments %}
+                    
+                        <p>{{ comment.content }}</p>
+                    {% endfor %}
+                    </p>
+            {% endif %}
+            <div>
+	<form action="" method="POST">
+		<fieldset>
+			<legend>Comment</legend>
+			{{ form.csrf_token }}
+<div>
+	{{ form.content.label }}
+	{{ form.content }} <br>
+	</div>
+</fieldset>
+<div>
+		{{ form.submit }} <br>
+	</div>
+	</form>
+</div>
+
+</body>
+</html>
